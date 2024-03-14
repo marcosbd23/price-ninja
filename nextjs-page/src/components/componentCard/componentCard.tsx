@@ -1,20 +1,23 @@
-import styles from "./componentCard.module.css"
-import Image from "next/image"
+import Image from "next/image";
 
-const ComponentCard = () => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.top}>
-                <div className={styles.imgContainer}>
-                    <Image src="/lobo-ninja-bien.png" alt="" fill className={styles.img} />
-                </div>
-            </div>
-            <div className={styles.bottom}>
-                <h2 className={styles.title}>Title</h2>
-                <p className={styles.price}><span>Price1</span> - <span> Price 2</span></p>
-            </div>
-        </div>
-    )
+interface ComponentCardProps {
+    title: string;
+    price1: string;
+    price2: string;
 }
 
-export default ComponentCard
+const ComponentCard: React.FC<ComponentCardProps> = ({ title, price1, price2 }) => {
+    return (
+        <div className="flex flex-col items-center gap-5">
+            <div className="w-52 h-52 relative border border-solid border-black rounded-lg overflow-hidden">
+                <Image src="/lobo-ninja-bien.png" alt={title} layout="fill" objectFit="cover" />
+            </div>
+            <div className="text-center">
+                <h1 className="text-xl mb-2.5">{title}</h1>
+                <p className="mb-2.5 font-light text-slate-500">{price1} - {price2}</p>
+            </div>
+        </div>
+    );
+};
+
+export default ComponentCard;

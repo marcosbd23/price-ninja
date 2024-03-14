@@ -16,15 +16,15 @@ const links = [
         path: "/about",
     },
     {
-        title: "Products",
-        path: "/products",
+        title: "Categories",
+        path: "/categories",
     },
 ];
 
 const Links = () => {
     const [open, setOpen] = useState(false);
 
-    // Pruebas
+    // Temporal
     const session = false;
 
     return (

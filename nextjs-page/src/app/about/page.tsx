@@ -1,40 +1,32 @@
-import styles from "./about.module.css"
-
 const AboutPage = () => {
   return (
-    <div className={styles.container}>
-      <div className={styles.textContainer}>
-        <h1 className={styles.title}>Your Destination to Save Time & Money</h1>
-        <h2 className={styles.subtitle}>About Price Ninja</h2>
-        <p className={styles.desc}>
-          <p>
-            <strong className={styles.descTitle}>Explore & Track:</strong>
+    <div className="flex gap-16">
+      <div className="flex-1 flex flex-col gap-8 justify-center text-center">
+        <h1 className="text-6xl font-bold">Your Destination to Save Time & Money</h1>
+        <h2 className="text-gray-400 font-semibold">About Price Ninja</h2>
+        <div className="text-xl text-gray-500 font-semibold text-justify mt-10">
+          <p className="mb-4">
+            <strong className="text-black font-bold text-3xl">Explore & Track:</strong>
           </p>
-          <br />
-          <p>
-            Our platform offers an extensive database of computer.
-            From processors and graphics cards to motherboards to
-            motherboards and storage drives, you can browse and
-            track the technical specifications, performance
-            and prices, all in one place.
+          <p className="mb-4">
+            Our platform offers an extensive database of components.
+            From processors and graphics cards to motherboards and
+            storage drives. You can easily search for the product
+            you need, whether computers, laptops, monitors, etc.
           </p>
-          <br />
-          <p>
-            <strong className={styles.descTitle}>Price Alerts:</strong>
+          <p className="mb-8">
+            <strong className="text-black font-bold text-3xl">Price Alerts:</strong>
           </p>
-          <br />
-          <p>
+          <p className="mb-4">
             Don't miss out on any offer. Receive notifications when the products
-            products you have chosen go down in price.
+            you have chosen go down in price.
           </p>
-          <br />
           <p>
             At Price Ninja, we believe that every component counts. Discover, compare
             and take your configuration to the next level with us.
           </p>
-        </p>
+        </div>
       </div>
-      <div className={styles.imgContainer}></div>
     </div>
   )
 }
