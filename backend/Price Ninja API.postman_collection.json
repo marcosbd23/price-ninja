@@ -8,6 +8,45 @@
 	"item": [
 		{
 			"name": "Scrape Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 409\", function () {",
+							"  pm.expect(pm.response.code).to.equal(409);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required field - message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message field is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is set to application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -50,10 +89,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/scrape",
+							"raw": "http://localhost:4000/api/v1/products/scrape",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -285,6 +326,31 @@
 		},
 		{
 			"name": "Create Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 201', function () {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test('Stock is a boolean value', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.stock).to.be.a('boolean');",
+							"})",
+							"",
+							"pm.test('Current price is a non-negative number', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.current_price).to.be.a('number');",
+							"    pm.expect(responseData.current_price).to.be.at.least(0);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -326,10 +392,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products",
+							"raw": "http://localhost:4000/api/v1/products",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -559,6 +627,28 @@
 		},
 		{
 			"name": "Get Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test('Response has the required fields', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.totalProducts).to.exist;",
+							"    pm.expect(responseData.pages).to.exist;",
+							"    pm.expect(responseData.currentPage).to.exist;",
+							"    pm.expect(responseData.data).to.exist;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -582,10 +672,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products",
+							"raw": "http://localhost:4000/api/v1/products",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -828,6 +920,40 @@
 		},
 		{
 			"name": "Get Product By ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"ID is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData.id).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"ID should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"URL is a valid URL format\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.url).to.match(/^https?:\\/\\/[^\\s/$.?#].[^\\s]*$/);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Stock should be a boolean value\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.stock).to.be.a('boolean');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -852,10 +978,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/03817895-1230-4841-8c25-fa64bae75428",
+							"raw": "http://localhost:4000/api/v1/products/03817895-1230-4841-8c25-fa64bae75428",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -1086,6 +1214,34 @@
 		},
 		{
 			"name": "Get Products By Category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200', function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.test('Response has the required fields', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.totalProducts).to.exist;",
+							"    pm.expect(responseData.pages).to.exist;",
+							"    pm.expect(responseData.currentPage).to.exist;",
+							"    pm.expect(responseData.data).to.exist;",
+							"})",
+							"",
+							"pm.test('Verify that the \\'data\\' array is present in the response and contains at least one element', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.data).to.exist.and.to.be.an('array').and.to.have.lengthOf.at.least(1, 'At least one element should be present in the \\'data\\' array');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1111,10 +1267,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/categories/fuentes-de-alimentacion",
+							"raw": "http://localhost:4000/api/v1/products/categories/fuentes-de-alimentacion",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -1351,6 +1509,38 @@
 		},
 		{
 			"name": "Get Categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test('Response has the required fields - id, name, thumb, and slug', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function (category) {",
+							"        pm.expect(category).to.have.property('id');",
+							"        pm.expect(category).to.have.property('name');",
+							"        pm.expect(category).to.have.property('thumb');",
+							"        pm.expect(category).to.have.property('slug');",
+							"    });",
+							"})",
+							"",
+							"pm.test('Validate the format of the thumb field', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"    responseData.forEach(function (category) {",
+							"        pm.expect(category.thumb).to.exist.and.to.match(/^https?:\\/\\/.+$/, 'Thumb field should be a valid URL');",
+							"    });",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1374,10 +1564,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/categories",
+							"raw": "http://localhost:4000/api/v1/categories",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -1489,6 +1681,56 @@
 		},
 		{
 			"name": "Get Product Changes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.totalChanges).to.exist;",
+							"    pm.expect(responseData.pages).to.exist;",
+							"    pm.expect(responseData.currentPage).to.exist;",
+							"    pm.expect(responseData.data).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that totalChanges is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.totalChanges).to.exist.and.to.be.a('number');",
+							"    pm.expect(responseData.totalChanges).to.be.at.least(0, \"totalChanges should be a non-negative integer\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Pages is a non-negative integer\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.pages).to.be.a('number');",
+							"  pm.expect(responseData.pages).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"The currentPage must be a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.currentPage).to.be.a('number');",
+							"    pm.expect(responseData.currentPage).to.be.at.least(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1514,10 +1756,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/changes/03817895-1230-4841-8c25-fa64bae75428",
+							"raw": "http://localhost:4000/api/v1/products/changes/03817895-1230-4841-8c25-fa64bae75428",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -1750,6 +1994,41 @@
 		},
 		{
 			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 400', function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test('Response contains an error message', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    pm.expect(responseData[0].message).to.exist;",
+							"})",
+							"",
+							"pm.test('Error message is not empty', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function (error) {",
+							"        pm.expect(error.message).to.exist.and.to.not.be.empty;",
+							"    });",
+							"})",
+							"",
+							"pm.test('Error message is of type string', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function (error) {",
+							"        pm.expect(error.message).to.be.a('string');",
+							"    });",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -1792,10 +2071,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/6514d735-8b5b-40ae-b912-28e4d2b21dc0",
+							"raw": "http://localhost:4000/api/v1/products/6514d735-8b5b-40ae-b912-28e4d2b21dc0",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -2150,6 +2431,47 @@
 		},
 		{
 			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {",
+							"  pm.expect(pm.response.code).to.equal(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response content type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response body is an array\", function () {",
+							"  pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the error message field in the response\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('array');",
+							"  pm.expect(responseData[0].message).to.exist.and.to.be.a('string');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the error path field in the response\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('array');",
+							"  responseData.forEach(function(error) {",
+							"    pm.expect(error.path).to.exist.and.to.be.an('array');",
+							"  });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -2192,10 +2514,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/6514d735-8b5b-40ae-b912-28e4d2b21dc0",
+							"raw": "http://localhost:4000/api/v1/products/6514d735-8b5b-40ae-b912-28e4d2b21dc0",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
@@ -2550,6 +2874,30 @@
 		},
 		{
 			"name": "Delete Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 404', function () {",
+							"    pm.response.to.have.status(404);",
+							"})",
+							"",
+							"pm.test('Response has the required field - message', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+							"})",
+							"",
+							"pm.test('Verify that the error message indicates that the product was not found', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.message).to.equal('Product not found');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -2574,10 +2922,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/api/v1/products/765e97b6-c677-49a3-ab22-309e86efc2b6",
+							"raw": "http://localhost:4000/api/v1/products/765e97b6-c677-49a3-ab22-309e86efc2b6",
+							"protocol": "http",
 							"host": [
-								"{{baseurl}}"
+								"localhost"
 							],
+							"port": "4000",
 							"path": [
 								"api",
 								"v1",
